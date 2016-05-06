@@ -34,10 +34,11 @@ class puppet::server::service(
       true  => 'running',
       false => 'stopped',
     }
-    service { 'puppetserver':
+    # Use "ensure_resource" here to allow multiple definitions such as that
+    # in puppetlabs-puppetdb:
+    ensure_resource('service', 'puppetserver', {
       ensure => $ps_ensure,
       enable => $puppetserver,
-    }
+    })
   }
-
 }
