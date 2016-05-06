@@ -1,5 +1,76 @@
 # Changelog
 
+## 5.0.0
+* New or changed parameters:
+    * Add server_ip for configuring the listen IP (puppetserver only)
+    * Add passenger_min_instances and passenger_pre_start for passenger tuning
+    * Remove passenger_max_pool which had no effect
+    * The autosign parameter now takes only the path to the autosign file or
+      a boolean. An additional parameter, autosign_mode, was added to set the
+      file mode of the autosign file/script.
+* Other features:
+    * Support puppetserver 2.x
+* Other changes and fixes:
+    * Use puppetserver by default with AIO packages
+
+## 4.3.1
+* Other changes and fixes:
+    * set hiera_config correctly on puppet 4
+    * let puppetdb_conf notify the puppetmaster service
+
+## 4.3.0
+* New or changed parameters:
+    * Add server_git_repo_mode, group and user parameters for repo ownership
+    * Add systemd.timer value to runmode parameter to run the agent from
+      systemd timers, add systemd_cmd and systemd_unit_name parameters
+    * Add unavailable_runmodes parameter to limit which _other_ runmodes are
+      not possible when configuring the agent
+* Other features:
+    * Support Ubuntu 16.04
+* Other changes and fixes:
+    * Support Puppet 3.0 minimum
+    * Use lower case FQDN to access Foreman from ENC/report processors (#8389)
+    * Move reports setting to main puppet.conf section (GH-311)
+    * Expose v1 /status endpoint in auth.conf (GH-338)
+    * Update Puppet 3.8.x package name on FreeBSD
+    * Fix default systemd and cron commands with AIO package (GH-340)
+    * Fix ownership of environment.conf (GH-349, GH-350)
+    * Support Fedora 21, remove Debian 6 (Squeeze)
+
+## 4.2.0
+* New or changed parameters:
+    * Add codedir parameter, for Puppet code directory
+    * Add package_source parameter to provide package location on Windows
+    * Add dir_owner/dir_group parameters for base Puppet agent dir ownership
+    * Add various server_jvm parameters to manage Puppet Server JVM settings
+    * Add autosign parameter to override autosign.conf location or script
+    * Add server_default_manifest parameters to manage the Puppet master's
+      default manifest
+    * Add server_ssl_dir_manage parameter to control presence of ssl_dir
+* Other features:
+    * Add Puppet agent AIO support
+    * Manage Puppet 4 on FreeBSD
+* Other changes and fixes:
+    * Ensure server_manifest_path directory exists
+    * Disable generation of Puppet CA when server_ca parameter is false
+    * Fix parameter names in README example
+
+## 4.1.0
+* New or changed parameters:
+    * Add sharedir parameter to configure /usr/share/puppet location
+    * Add manage\_packages parameter to change whether to manage agent,
+      master, both packages (true) or none (false)
+* Other features:
+    * Support Puppet master setup on FreeBSD
+* Other changes and fixes:
+    * Explicitly set permissions and ownership where necessary to stop
+      site-wide defaults applying
+
+## 4.0.1
+* Update auth.conf for Puppet 4 API v3 endpoints
+* Expand $ssldir in puppet.conf
+* List incompatibility with puppetlabs/puppetdb 5.x
+
 ## 4.0.0
 * New or changed parameters:
     * Add server\_http\_* parameters to configure the master to listen on HTTP

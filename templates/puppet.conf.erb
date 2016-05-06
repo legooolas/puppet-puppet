@@ -20,11 +20,7 @@
     privatekeydir = $ssldir/private_keys { group = service }
     hostprivkey = $privatekeydir/$certname.pem { mode = 640 }
 
-    # Puppet 3.0.x requires this in both [main] and [master] - harmless on agents
-    autosign       = $confdir/autosign.conf { mode = 664 }
-
     show_diff     = <%= scope.lookupvar('::puppet::show_diff') %>
-
 <% if @module_repository and !@module_repository.empty? -%>
     module_repository = <%= @module_repository %>
 <% end -%>
@@ -36,9 +32,6 @@
 <% if @ca_port and !@ca_port.to_s.empty? -%>
     # Use specified CA port
     ca_port = <%= @ca_port %>
-<% end -%>
-<% if @hiera_config and !@hiera_config.empty? -%>
-    hiera_config = <%= @hiera_config %>
 <% end -%>
 <% if @dns_alt_names and !@dns_alt_names.empty? -%>
     dns_alt_names = <%= @dns_alt_names.join(",") %>
@@ -56,10 +49,6 @@
 <% if @syslogfacility and !@syslogfacility.empty? -%>
 
     syslogfacility = <%= @syslogfacility %>
-<% end -%>
-<% if scope.lookupvar("puppet::server_directory_environments") -%>
-    environmentpath  = <%= scope.lookupvar("puppet::server_envs_dir") %>
-    basemodulepath   = <%= [scope.lookupvar("puppet::server_common_modules_path")].flatten.join(':') %>
 <% end -%>
 <% scope.lookupvar("puppet::additional_settings").sort_by {|k, v| k}.each do |key, value| -%>
     <%= key %> = <%= value %>

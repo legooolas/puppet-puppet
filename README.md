@@ -8,8 +8,15 @@ Installs and configures the Puppet agent and optionally a Puppet master (when
 or to be used as a Puppet module.
 
 The Puppet master is configured under Apache and Passenger by default, unless
-`server_passenger` is set to false.  Alternatively, set `server_implementation`
-to `puppetserver` to switch to the JVM-based Puppet Server.
+`server_passenger` is set to false. When using Puppet Labs AIO packages
+(puppet-agent) the JVM-based Puppet Server is installed by default. For Puppet
+3.x based installation, `server_implementation` can be set to `puppetserver`
+to switch to the JVM-based Puppet Server.
+
+When using Puppet Server 2 (version 2.0 was the first version to support Puppet 4),
+the module supports and assumes you will be installing the latest version (currently 2.3.1).
+If you know you'll be installing an earlier version, you will need to override
+`server_puppetserver_version`.
 
 Many puppet.conf options for agents, masters and other are parameterized, with
 class documentation provided at the top of the manifests. In addition, there
@@ -24,7 +31,7 @@ Puppet 3.6+ and config environments on older versions.  These are set up under
 create, or use `puppet::server::env` for more control. When using directory
 environments with R10K you need to set the `server_environments` parameter to an
 empty array ie. `[]` to prevent `r10k deploy environments` from reporting an
-error caused by the creation of top level environment directory(s). 
+error caused by the creation of top level environment directory(s).
 
 ## Git repo support
 
@@ -48,10 +55,10 @@ Requires [theforeman/foreman](https://forge.puppetlabs.com/theforeman/foreman).
 
 The Puppet master can be configured to export catalogs and reports to a
 PuppetDB instance, using the puppetlabs/puppetdb module.  Use its
-`puppetdb::server` class to install PuppetDB and this module to configure the
-Puppet master.
+`puppetdb::server` class to install the PuppetDB server and this module to
+configure the Puppet master to connect to PuppetDB.
 
-Requires [puppetlabs/puppetdb](https://forge.puppetlabs.com/puppetlabs/puppetdb).
+Requires [puppetlabs/puppetdb](https://forge.puppetlabs.com/puppetlabs/puppetdb) <5.0.0.
 
 # Installation
 
@@ -99,7 +106,7 @@ wrapper classes or even your ENC (if it supports param classes). For example:
       server_reports        => 'store',
       server_external_nodes => '',
     }
-    
+
     # The same example as above but overriding `server_environments` for R10K
     class { '::puppet':
       server                => true,
@@ -111,11 +118,10 @@ wrapper classes or even your ENC (if it supports param classes). For example:
 
     # Want to integrate with an existing PuppetDB?
     class { '::puppet':
-      server               => true,
-      server_puppetdb_host => 'mypuppetdb.example.com',
-      server_reports       => 'puppetdb,foreman',
-      storeconfigs         => true,
-      storeconfigs_backend => 'puppetdb',
+      server                      => true,
+      server_puppetdb_host        => 'mypuppetdb.example.com',
+      server_reports              => 'puppetdb,foreman',
+      server_storeconfigs_backend => 'puppetdb',
     }
 
 Look in _init.pp_ for what can be configured this way, see Contributing if anything

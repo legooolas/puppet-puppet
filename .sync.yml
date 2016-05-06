@@ -1,4 +1,4 @@
 ---
-spec/spec_helper.rb:
-  requires:
-    - lib/module_spec_helper
+Rakefile:
+  param_docs_pattern:
+    - manifests/init.pp
