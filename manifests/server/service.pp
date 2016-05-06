@@ -32,10 +32,10 @@ class puppet::server::service(
   if $puppetserver != undef {
     # Ugh what a hack to avoid duplicate resources, defined() or ensure_resources...:
     if $puppetserver {
-      class { '::puppetserver_wrapper::service::running': }
+      include ::puppetserver_wrapper::service::running
     }
     else {
-      class { '::puppetserver_wrapper::service::stopped': }
+      include ::puppetserver_wrapper::service::stopped
     }
   }
 }
