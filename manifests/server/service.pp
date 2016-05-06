@@ -31,7 +31,7 @@ class puppet::server::service(
 
   if $puppetserver != undef {
     # Ugh what a hack to avoid duplicate resources, defined() or ensure_resources...:
-    if $ps_ensure {
+    if $puppetmaster {
       class { '::puppetserver_wrapper::service::running': }
     }
     else {
