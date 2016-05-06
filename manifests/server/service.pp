@@ -30,15 +30,12 @@ class puppet::server::service(
   }
 
   if $puppetserver != undef {
-    $ps_ensure = $puppetserver ? {
-      true  => 'running',
-      false => 'stopped',
+    # Ugh what a hack to avoid duplicate resources, defined() or ensure_resources...:
+    if $ps_ensure {
+      class { '::puppetserver_wrapper::service::running': }
     }
-    # Use "ensure_resource" here to allow multiple definitions such as that
-    # in puppetlabs-puppetdb:
-    ensure_resource('service', 'puppetserver', {
-      ensure => $ps_ensure,
-      enable => $puppetserver,
-    })
+    else {
+      class { '::puppetserver_wrapper::service::stopped': }
+    }
   }
 }
